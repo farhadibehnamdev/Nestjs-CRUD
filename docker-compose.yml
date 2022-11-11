@@ -7,4 +7,19 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: pass123
+      POSTGRES_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+
+  pgadmin:
+    container_name: pg_container
+    depends_on:
+      - db
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - '5556:80'
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    tty: true
+    links:
+      - db
